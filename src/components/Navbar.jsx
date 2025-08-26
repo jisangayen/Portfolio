@@ -58,12 +58,8 @@ export const Navbar = ({navOpen}) => {
       label: 'Contact',
       link: '#contact',
       className: 'nav-link md:hidden'
-    },
-    {
-      label: 'Resume',
-      link: '#cv',
-      className: 'nav-link'
     }
+
   ];
   return (
     <nav className={" navbar " + (navOpen ? 'active' : "")}>
