@@ -10,7 +10,7 @@ const Hero = () => {
           <div className="flex items-center gap-4">
             <figure className="img-box w-9 h-9 rounded-lg">
               <img
-                src="/images/avatar-1.jpg"
+                src="/images/ProfilePic.png"
                 alt="Jisan Hoque Gayen"
                 width={40}
                 height={40}
@@ -25,22 +25,28 @@ const Hero = () => {
               Available for work
             </div>
           </div>
-          <h2 className="headline-1 max-w-[15ch] sm:max-w-[20ch] lg:max-w-[15ch] mt-5 mb-8 lg:mb-10">Building Scalable Modern Websites for the Future</h2>
+          <h2 className="font-inter font-extrabold xl:text-5xl sm:text-4xl text-3xl leading-tight mb-8 mt-4 text-zinc-100">
+            I’m a web{" "}
+            <span className="text-cyan-400 drop-shadow font-black text-4xl xl:text-6xl ">Developer</span>
+            <br />
+            <span className="font-medium text-zinc-400">
+              passionate about building modern, scalable, and user-friendly websites.
+            </span>
+          </h2>
           <div className="flex items-center gap-3">
             <ButtonPrimary
               label="Download Cv"
               icon="download"
               href="/cv.pdf"
               target="_blank"
-              download='Jisan.pdf'
+              download="Jisan.pdf"
             />
-            
           </div>
         </div>
         <div className="hidden lg:block">
           <figure className="w-full max-w-[480px] ml-auto bg-gradient-to-t from-sky-400 via-25% via-sky-400/40 to-65% rounded-[60px] overflow-hidden ">
             <img
-              src="/images/hero-banner.png"
+              src="/images/ProfilePic.png"
               alt="jisan"
               width={656}
               height={800}

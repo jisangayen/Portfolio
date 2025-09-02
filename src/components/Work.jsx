@@ -3,41 +3,41 @@ import ProjectCard from './ProjectCard';
 
 const works = [
   {
-    imgSrc: '/images/project-1.jpg',
-    title: 'Full stack music app',
-    tags: ['API', 'MVC', 'Development'],
-    projectLink: 'https://musify-5al0.onrender.com/'
+    imgSrc: '/images/p3.png',
+    title: 'Dr. Appointment Project',
+    tags: ['React', 'Node', 'Development'],
+    projectLink: 'https://doctor-appointment-frontend-six.vercel.app/'
   },
   {
-    imgSrc: '/images/project-2.jpg',
-    title: 'Free stock photo app',
-    tags: ['API', 'SPA'],
-    projectLink: 'https://pixstock-official.vercel.app/'
+    imgSrc: '/images/p2.png',
+    title: 'Fook Finder App',
+    tags: ['Responsive', 'React','TailwindCSS'],
+    projectLink: 'https://book-finder-dun-xi.vercel.app/'
   },
   {
-    imgSrc: '/images/project-3.jpg',
-    title: 'Recipe app',
-    tags: ['Development', 'API'],
-    projectLink: ''
+    imgSrc: '/images/p4.png',
+    title: 'Music App',
+    tags: ['HTML', 'CSS', 'Development'],
+    projectLink: 'https://spotify-seven-eta.vercel.app/'
   },
   {
-    imgSrc: '/images/project-4.jpg',
-    title: 'Real state website',
-    tags: ['Web-design', 'Development'],
-    projectLink: 'https://github.com/codewithsadee-org/wealthome'
+    imgSrc: '/images/p5.png',
+    title: 'Admin Panel',
+    tags: ['Web-design', 'Node',"Authication"],
+    projectLink: 'https://doctor-appointment-admin-six.vercel.app/'
   },
-  {
-    imgSrc: '/images/project-5.jpg',
-    title: 'eCommerce website',
-    tags: ['eCommerce', 'Development'],
-    projectLink: 'https://github.com/codewithsadee/anon-ecommerce-website'
-  },
-  {
-    imgSrc: '/images/project-6.jpg',
-    title: 'vCard Personal portfolio',
-    tags: ['Web-design', 'Development'],
-    projectLink: 'https://github.com/codewithsadee/vcard-personal-portfolio'
-  },
+  // {
+  //   imgSrc: '/images/project-5.jpg',
+  //   title: 'eCommerce website',
+  //   tags: ['eCommerce', 'Development'],
+  //   projectLink: 'https://github.com/codewithsadee/anon-ecommerce-website'
+  // },
+  // {
+  //   imgSrc: '/images/project-6.jpg',
+  //   title: 'vCard Personal portfolio',
+  //   tags: ['Web-design', 'Development'],
+  //   projectLink: 'https://github.com/codewithsadee/vcard-personal-portfolio'
+  // },
 ];
 
 const Work = () => {
