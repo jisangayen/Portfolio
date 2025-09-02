@@ -12,7 +12,7 @@ const Header = () => {
         <div className="max-w-screen-2xl w-full mx-auto px-4 flex justify-between items-center md:px-4 md:grid  md:grid-cols-[1fr,3fr,1fr]">
             <h1>
                 <a href="/" className='logo'>
-                <img src="/images/L11.png"
+                <img src="/images/L22.png"
                 height={60}
                 width={60}
                 alt="jisan"
@@ -26,7 +26,7 @@ const Header = () => {
               </button>
               <Navbar navOpen={navOpen}/>
             </div>
-            <a href="#contact" className='btn btn-secondary max-md:hidden md:justify-self-end hover:bg-blue-400 hover:text-white transition-colors duration-300 ease-in-out'>
+            <a href="#contact" className='btn btn-secondary max-md:hidden md:justify-self-end hover:bg-PrimaryColor hover:text-white transition-colors duration-300 ease-in-out'>
                Contact Me
             </a>
         </div>

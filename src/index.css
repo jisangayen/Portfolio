@@ -80,11 +80,11 @@ body{
 }
 
 .nav-link.active{
-  @apply text-zinc-900 duration-500
+  @apply text-white duration-500
 }
 
 .navbar .active-box{
-  @apply absolute top-2 left-2 right-2 h-9 bg-zinc-50 rounded-lg -z-10  duration-500
+  @apply absolute top-2 left-2 right-2 h-9 bg-PrimaryColor  rounded-lg -z-10  duration-500
 }
 
 
@@ -95,7 +95,7 @@ body{
 }
 
 .btn-secondary{
-  @apply bg-zinc-50 text-zinc-900 active:bg-zinc-50/80
+  @apply bg-transparent text-white active:bg-zinc-50/80
 }
 
 .btn .material-symbols-rounded {
@@ -106,7 +106,7 @@ body{
 }
 
 .btn-primary{
-  @apply h-11 bg-sky-400 text-zinc-800 font-semibold hover:bg-sky-300
+  @apply h-11 bg-PrimaryColor text-white/80 font-semibold hover:bg-PrimaryColor/80
 }
 
 /* section  */

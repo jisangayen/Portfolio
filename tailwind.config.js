@@ -7,8 +7,13 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily:{
-        'sans' : ['Inter']
+      fontFamily: {
+        'sans': ['Inter']
+      },
+      colors: {
+        PrimaryColor: "#fe8d4e",
+        PrimaryColor2: "#fd5472",
+        SecondaryColor: "#7234fe"
       }
     },
   },
