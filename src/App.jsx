@@ -13,6 +13,7 @@ import { ReactLenis} from 'lenis/react'
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Skils2 from "./components/Skils2"
 //gsap pluging
 // gsap.registerPlugin(useGSAP); 
 gsap.registerPlugin(ScrollTrigger);
@@ -43,6 +44,7 @@ export default function App() {
       <Hero/>
       <About/>
       <Skills/>
+      <Skils2/>
       <Work/>
       <Review/>
       <Contact/>
