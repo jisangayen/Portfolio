@@ -1,89 +1,47 @@
-import React from 'react'
-
-// node module 
-import { useRef, useEffect} from 'react';
-
+import React from 'react';
+import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 
-export const Navbar = ({navOpen}) => {
-  const lastActiveLink = useRef()
-  const activeBox = useRef()
-
-  const initActiveBox =()=>{
-    activeBox.current.style.top = lastActiveLink.current.offsetTop + 'px'
-    activeBox.current.style.left = lastActiveLink.current.offsetLeft + 'px'
-    activeBox.current.style.width = lastActiveLink.current.offsetWidth + 'px'
-    activeBox.current.style.height = lastActiveLink.current.offsetHeight + 'px'
-
-  }
-
-  useEffect(initActiveBox, []);
-  window.addEventListener('resize', initActiveBox )
-
-  const activeCurrentLink = (event)=>{
-    lastActiveLink.current?.classList.remove('active');
-    event.target.classList.add('active')
-    lastActiveLink.current = event.target
-
-    activeBox.current.style.top = event.target.offsetTop + 'px'
-    activeBox.current.style.left = event.target.offsetLeft + 'px'
-    activeBox.current.style.width = event.target.offsetWidth + 'px'
-    activeBox.current.style.height =event.target.offsetHeight + 'px'
-
-  }
+export const Navbar = ({ navOpen }) => {
+  // We use state now instead of manual refs for the active link
+  // This makes the component more "React-way" and reliable
+  const [activeLink, setActiveLink] = React.useState('#home');
 
   const navItems = [
-    {
-      label: 'Home',
-      link: '#home',
-      className: 'nav-link active',
-      ref: lastActiveLink
-    },
-    {
-      label: 'About',
-      link: '#about',
-      className: 'nav-link'
-    },
-    {
-      label: 'Work',
-      link: '#work',
-      className: 'nav-link'
-    },
-    {
-      label: 'Reviews',
-      link: '#reviews',
-      className: 'nav-link'
-    },
-    {
-      label: 'Contact',
-      link: '#contact',
-      className: 'nav-link md:hidden'
-    }
-
+    { label: 'Home', link: '#home' },
+    { label: 'About', link: '#about' },
+    { label: 'Work', link: '#work' },
+    { label: 'Reviews', link: '#reviews' },
+    { label: 'Contact', link: '#contact', mobileOnly: true }
   ];
-  return (
-    <nav className={" navbar " + (navOpen ? 'active' : "")}>
-      {
-        navItems.map(({ label, link, className, ref}, key)=>
-          <a 
-        href={link}
-        className={className}
-        key={key}
-        ref={ref}
-        onClick={activeCurrentLink}
-        >{label}</a>
-        )
-      }
-      <div
-       className='active-box'
-       ref={activeBox}
-       
-       >
 
-      </div>
+  return (
+    <nav className={`navbar ${navOpen ? 'active' : ''} relative flex items-center p-1 bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-full`}>
+      {navItems.map(({ label, link, mobileOnly }, key) => (
+        <a
+          href={link}
+          key={key}
+          onClick={() => setActiveLink(link)}
+          className={`relative px-5 py-2 text-sm font-medium transition-colors duration-300 z-10 
+            ${activeLink === link ? 'text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'}
+            ${mobileOnly ? 'md:hidden' : ''}`}
+        >
+          {label}
+
+          {/* This is the magic "Active Box" */}
+          {activeLink === link && (
+            <motion.div
+              layoutId="active-pill"
+              className="absolute inset-0 bg-gradient-to-r from-PrimaryColor/20 to-PrimaryColor2/20 border border-PrimaryColor/50 rounded-full -z-10"
+              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            />
+          )}
+        </a>
+      ))}
     </nav>
-  )
-}
-Navbar.PropTypes ={
+  );
+};
+
+Navbar.propTypes = {
   navOpen: PropTypes.bool.isRequired
-}
+};

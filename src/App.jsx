@@ -46,7 +46,7 @@ export default function App() {
       <Skills/>
       <Skils2/>
       <Work/>
-      <Review/>
+      {/* <Review/> */}
       <Contact/>
     </main>
     <Footer/>
