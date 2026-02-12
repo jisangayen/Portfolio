@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ButtonPrimary } from './Button';
-import { ArrowUpRight, ChevronUp, Globe } from 'lucide-react';
+import { ArrowUpRight, ChevronUp, Globe, Sparkles } from 'lucide-react';
 
 const sitemap = [
   { label: 'Home', href: '#home' },
@@ -18,108 +18,170 @@ const socials = [
   { label: 'Facebook', href: 'https://www.facebook.com/jisan.h.gayen' }
 ];
 
+const Magnetic = ({ children }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e) => {
+    if (window.innerWidth < 768) return; // Disable magnetic on mobile for better touch UX
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.3, y: middleY * 0.3 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={() => setPosition({ x: 0, y: 0 })}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Footer = () => {
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [time, setTime] = useState('');
+  const container = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ["start end", "end end"]
+  });
+  
+  // Reduced travel distance for mobile parallax
+  const textX = useTransform(scrollYProgress, [0, 1], [-50, 0]);
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString('en-US', { 
+        hour12: true, hour: '2-digit', minute: '2-digit' 
+      }));
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative bg-zinc-950 pt-32 pb-10 overflow-hidden border-t border-zinc-900">
+    <footer 
+      ref={container}
+      className="relative bg-[#080808] pt-20 pb-6 md:pt-32 md:pb-10 overflow-hidden border-t border-zinc-900/50"
+    >
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-PrimaryColor/5 blur-[100px] md:blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2" />
       
-      <div className="container px-6">
-        <div className="grid lg:grid-cols-12 gap-12 mb-24">
+      <div className="container px-6 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-32">
           
-          {/* --- LEFT SIDE: THE BIG CALL --- */}
+          {/* --- TOP: CALL TO ACTION --- */}
           <div className="lg:col-span-7">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter mb-10">
-                READY TO <br />
-                <span className="text-PrimaryColor italic">COLLABORATE?</span>
+            <motion.div style={{ x: textX }}>
+              <h2 className="text-[15vw] lg:text-[7rem] font-bold text-white leading-[0.8] tracking-tightest mb-8 md:mb-12">
+                LET'S BUILD <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-PrimaryColor to-zinc-500 italic">
+                  SOMETHING.
+                </span>
               </h2>
-              <div className="flex flex-wrap items-center gap-6">
+            </motion.div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6 md:gap-8">
+              <Magnetic>
                 <ButtonPrimary
                   href="mailto:jisangayen@gmail.com"
-                  label="Get in Touch"
+                  label="Start a Project"
                 />
-                <div className="flex items-center gap-2 text-zinc-500 font-mono text-sm">
-                  <Globe size={14} className="animate-spin-slow" />
-                  <span>Based in India — Working Worldwide</span>
+              </Magnetic>
+              
+              <div className="flex flex-col gap-1 border-l border-zinc-800 pl-4 sm:border-none sm:pl-0">
+                <div className="flex items-center gap-2 text-zinc-400 font-mono text-[10px] md:text-xs uppercase tracking-tighter">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  Available for Freelance
+                </div>
+                <div className="flex items-center gap-2 text-zinc-500 font-mono text-[9px] md:text-[10px] uppercase">
+                  <Globe size={10} />
+                  <span>Based in India — Worldwide</span>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* --- RIGHT SIDE: LINKS --- */}
-          <div className="lg:col-span-5 grid grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <h4 className="text-zinc-600 font-bold uppercase tracking-[0.2em] text-[10px]">Navigation</h4>
-              <ul className="space-y-3">
-                {sitemap.map((item, key) => (
-                  <li key={key}>
-                    <a href={item.href} className="group flex items-center gap-2 text-zinc-400 hover:text-white transition-all">
-                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity text-PrimaryColor">/</span>
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* --- LINKS SECTION: Tightened for Mobile --- */}
+          <div className="lg:col-span-5 flex flex-col justify-end">
+            <div className="grid grid-cols-2 gap-8 md:gap-12">
+              <div className="space-y-4 md:space-y-8">
+                <p className="text-zinc-600 font-mono text-[9px] uppercase tracking-[0.3em]">Menu</p>
+                <ul className="space-y-2 md:space-y-4">
+                  {sitemap.map((item, key) => (
+                    <li key={key}>
+                      <a href={item.href} className="text-sm md:text-xl text-zinc-400 hover:text-white transition-colors">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <div className="space-y-6">
-              <h4 className="text-zinc-600 font-bold uppercase tracking-[0.2em] text-[10px]">Connect</h4>
-              <ul className="space-y-3">
-                {socials.map((item, key) => (
-                  <li key={key}>
-                    <a href={item.href} target="_blank" className="flex items-center justify-between text-zinc-400 hover:text-white transition-all group border-b border-zinc-900 pb-1">
-                      {item.label}
-                      <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div className="space-y-4 md:space-y-8">
+                <p className="text-zinc-600 font-mono text-[9px] uppercase tracking-[0.3em]">Social</p>
+                <ul className="space-y-2 md:space-y-4">
+                  {socials.map((item, key) => (
+                    <li key={key}>
+                      <a 
+                        href={item.href} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="group flex items-center justify-between text-zinc-400 hover:text-white transition-all border-b border-zinc-900 pb-1 text-sm md:text-lg"
+                      >
+                        <span>{item.label}</span>
+                        <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* --- BOTTOM SECTION --- */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-zinc-900/50">
+        {/* --- BOTTOM SECTION: Optimized stacking --- */}
+        <div className="pt-8 border-t border-zinc-900/80 flex flex-col gap-8 md:flex-row md:items-center md:justify-between md:gap-10">
           
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-            <div className="text-zinc-100 font-black text-2xl tracking-tighter">
-              JISAN<span className="text-PrimaryColor">.</span>
+          <div className="flex items-center justify-between md:justify-start gap-6">
+            <div className="text-white font-bold text-lg md:text-xl tracking-tighter">
+              JISAN<span className="text-PrimaryColor animate-pulse">_</span>
             </div>
-            <div className="hidden md:block w-[1px] h-4 bg-zinc-800" />
-            <div className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
-              Local Time: <span className="text-zinc-300">{time}</span>
+            
+            <div className="flex flex-col border-l border-zinc-800 pl-4 md:pl-6">
+              <span className="text-zinc-600 text-[8px] uppercase tracking-widest">Time</span>
+              <span className="text-zinc-300 font-mono text-[10px] md:text-xs tabular-nums">{time}</span>
             </div>
           </div>
 
-          <p className="text-zinc-600 text-[10px] uppercase tracking-[0.3em]">
-            &copy; 2026 Developed with ❤️ by Jisan
-          </p>
+          <div className="flex items-center justify-between md:contents">
+             <div className="text-zinc-600 text-[9px] uppercase tracking-[0.2em]">
+                © 2026 Jisan
+             </div>
 
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={scrollToTop}
-            className="w-12 h-12 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:bg-white hover:text-zinc-950 transition-all shadow-xl"
-          >
-            <ChevronUp size={20} />
-          </motion.button>
+             <motion.button
+               whileTap={{ scale: 0.9 }}
+               onClick={scrollToTop}
+               className="group relative w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 border border-zinc-800"
+             >
+               <ChevronUp size={20} className="relative z-10 group-hover:text-PrimaryColor transition-colors" />
+             </motion.button>
+          </div>
         </div>
       </div>
 
-      {/* Decorative Gradient Shadow */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-PrimaryColor to-transparent opacity-50" />
+      <motion.div 
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-PrimaryColor/50 to-transparent" 
+      />
     </footer>
   );
 };

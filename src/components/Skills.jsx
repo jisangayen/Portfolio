@@ -19,7 +19,7 @@ const secondRow = skillItem.slice(4);
 
 const Skills = () => {
   return (
-    <section className='relative py-24 lg:py-32 overflow-hidden bg-zinc-950' id="skills">
+    <section className='relative py-4 lg:py-5 overflow-hidden bg-zinc-950' id="skills">
       
       {/* 1. LAYERED BACKGROUND GRADIENTS */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-PrimaryColor/10 blur-[120px] rounded-full pointer-events-none -z-10 animate-pulse" />

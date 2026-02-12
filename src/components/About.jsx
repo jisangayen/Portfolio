@@ -1,97 +1,66 @@
-import React from "react";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import { motion, useInView, animate } from "framer-motion";
 
 const aboutItems = [
-  { label: "Projects Completed", number: 10, suffix: "+" },
-  { label: "Year of Experience", number: 1, suffix: "+" },
-  { label: "Technologies Mastered", number: 12, suffix: "" },
+  { label: "Projects", number: 10, suffix: "+" },
+  { label: "Experience", number: 1, suffix: "yr" },
+  { label: "Tech Stack", number: 12, suffix: "" },
 ];
 
-// Next Level: A simple count-up component
-const Counter = ({ from, to }) => {
-  const [count, setCount] = useState(from);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
+const Counter = ({ to }) => {
+  const nodeRef = useRef();
+  const isInView = useInView(nodeRef, { once: true });
   useEffect(() => {
     if (isInView) {
-      let start = from;
-      const end = to;
-      if (start === end) return;
-      
-      let timer = setInterval(() => {
-        start += 1;
-        setCount(start);
-        if (start === end) clearInterval(timer);
-      }, 100);
-      return () => clearInterval(timer);
+      const controls = animate(0, to, { duration: 1.5, ease: "circOut", onUpdate: (v) => { nodeRef.current.textContent = v.toFixed(0); } });
+      return () => controls.stop();
     }
-  }, [isInView, from, to]);
-
-  return <span ref={ref}>{count}</span>;
+  }, [isInView, to]);
+  return <span ref={nodeRef}>0</span>;
 };
 
 const About = () => {
   return (
-    <section id="about" className="relative py-24 bg-zinc-950 overflow-hidden">
-      {/* Background Decorative Element */}
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-PrimaryColor/10 blur-[120px] rounded-full -z-10" />
-
-      <div className="container px-6">
-        <div className="grid lg:grid-cols-12 gap-6">
+    <section id="about" className="py-0 sm:py-20 bg-zinc-950 overflow-hidden">
+      <div className="container px-6 mx-auto">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4">
           
-          {/* --- LEFT: MAIN BIO (Bento Big Card) --- */}
+          {/* --- MAIN BIO: Compact & Punchy --- */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-8 relative group p-8 md:p-14 rounded-[2.5rem] bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-md overflow-hidden"
+            className="lg:col-span-8 p-6 md:p-10 rounded-3xl bg-zinc-900/50 border border-zinc-800/50 backdrop-blur-xl relative"
           >
             <div className="relative z-10">
-              <motion.span 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                className="inline-block px-4 py-1.5 rounded-full bg-PrimaryColor/10 text-PrimaryColor text-[10px] font-bold uppercase tracking-widest mb-6"
-              >
-                The Developer
-              </motion.span>
-              
-              <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-8 tracking-tighter">
-                I turn <span className="text-zinc-500">complex problems</span> into <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-PrimaryColor to-PrimaryColor2 italic">
-                  elegant solutions.
-                </span>
+              <span className="text-PrimaryColor font-mono text-[10px] uppercase tracking-[0.3em] block mb-4">// The Developer</span>
+              <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4 tracking-tighter">
+                Logic meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-PrimaryColor to-PrimaryColor2 italic">Precision.</span>
               </h2>
-
-              <p className="text-zinc-400 text-lg md:text-xl leading-relaxed max-w-[55ch]">
-                I&apos;m <span className="text-zinc-100 font-semibold">Jisan Hoque Gayen</span>, a software developer 
-                obsessed with pixel-perfection and high-performance code. I don’t just build websites; 
-                I craft digital experiences that are scalable, maintainable, and built to last.
+              <p className="text-zinc-400 text-sm md:text-base leading-relaxed max-w-xl">
+                I am <span className="text-zinc-100 font-bold">Jisan Hoque Gayen</span> I build complete MERN applications, designing fast React interfaces on the front and robust Node-Express architectures on the back. My work blends clean logic, optimized APIs, scalable MongoDB structures and smooth UI interactions. Every project is engineered end-to-end for performance, clarity and long-term reliability.
               </p>
             </div>
-            
-            {/* Artistic Grid Background for the card */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
           </motion.div>
 
-          {/* --- RIGHT: STATS (Bento Small Cards) --- */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
+          {/* --- STATS: Adaptive Mobile UI --- 
+              On Mobile: Displays as a tight 3-column row
+              On Desktop: Displays as a vertical stack
+          */}
+          <div className="lg:col-span-4 grid grid-cols-3 lg:grid-cols-1 gap-4">
             {aboutItems.map(({ label, number, suffix }, key) => (
               <motion.div
                 key={key}
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: key * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
-                className="flex-1 p-8 rounded-[2rem] bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-md flex flex-col justify-center items-center text-center group"
+                className="p-4 md:p-6 rounded-2xl bg-zinc-900/30 border border-zinc-800/50 flex flex-col items-center lg:items-start justify-center"
               >
-                <div className="flex items-center text-5xl md:text-6xl font-black text-white group-hover:text-PrimaryColor transition-colors tracking-tighter">
-                  <Counter from={0} to={number} />
-                  <span className="text-PrimaryColor2">{suffix}</span>
+                <div className="text-2xl md:text-4xl font-black text-white tracking-tighter">
+                  <Counter to={number} /><span className="text-PrimaryColor text-xl ml-0.5">{suffix}</span>
                 </div>
-                <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mt-2">
+                <p className="text-zinc-600 font-bold uppercase tracking-widest text-[8px] md:text-[10px] mt-1 text-center lg:text-left">
                   {label}
                 </p>
               </motion.div>

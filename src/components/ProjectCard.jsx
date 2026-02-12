@@ -10,6 +10,8 @@ const ProjectCard = ({ imgScr, title, tags, projectLink, classes }) => {
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
+  // Rotation is disabled on mobile (via media query logic in your head) 
+  // but Framer handles it fine.
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
 
@@ -26,28 +28,39 @@ const ProjectCard = ({ imgScr, title, tags, projectLink, classes }) => {
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       className={`group relative p-px rounded-3xl bg-gradient-to-b from-zinc-700/50 to-transparent ${classes}`}
     >
-      <div style={{ transform: "translateZ(50px)" }} className="relative p-5 rounded-[23px] bg-zinc-900 border border-zinc-800/50 h-full overflow-hidden">
-        {/* Spotlight */}
+      <div style={{ transform: "translateZ(50px)" }} className="relative p-4 md:p-5 rounded-[23px] bg-zinc-900 border border-zinc-800/50 h-full overflow-hidden">
+        
+        {/* Spotlight - Hidden on touch devices to avoid "sticky" hover states */}
         <motion.div
-          className="pointer-events-none absolute -inset-px rounded-[23px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="pointer-events-none absolute -inset-px rounded-[23px] opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
           style={{ background: useMotionTemplate`radial-gradient(350px circle at ${useTransform(x, [-0.5, 0.5], ["0%", "100%"])} ${useTransform(y, [-0.5, 0.5], ["0%", "100%"])}, rgba(var(--primary-rgb), 0.1), transparent 80%)` }}
         />
 
         <figure className="relative rounded-xl aspect-video mb-4 overflow-hidden bg-zinc-800">
-          <img src={imgScr} alt={title} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+          <img 
+            src={imgScr} 
+            alt={title} 
+            className="object-cover w-full h-full md:group-hover:scale-105 transition-transform duration-500" 
+            loading="lazy"
+          />
         </figure>
 
         <div className="flex justify-between items-end" style={{ transform: "translateZ(30px)" }}>
-          <div>
-            <h3 className="text-xl font-black text-zinc-100 group-hover:text-PrimaryColor transition-colors leading-none mb-2">{title}</h3>
+          <div className="flex-1 pr-2">
+            <h3 className="text-lg md:text-xl font-black text-zinc-100 group-hover:text-PrimaryColor transition-colors leading-tight mb-2">
+              {title}
+            </h3>
             <div className="flex flex-wrap gap-1.5">
               {tags.slice(0, 3).map((label, key) => (
-                <span key={key} className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-tight text-zinc-500 bg-zinc-950/50 border border-zinc-800 rounded-md">{label}</span>
+                <span key={key} className="px-2 py-0.5 text-[8px] md:text-[9px] font-bold uppercase tracking-tight text-zinc-500 bg-zinc-950/50 border border-zinc-800 rounded-md">
+                  {label}
+                </span>
               ))}
             </div>
           </div>
-          <div className="p-2.5 rounded-lg bg-zinc-800 text-zinc-100 group-hover:bg-PrimaryColor group-hover:text-zinc-950 transition-all shrink-0">
-            <ArrowUpRight size={18} />
+          
+          <div className="p-2 md:p-2.5 rounded-lg bg-zinc-800 text-zinc-100 md:group-hover:bg-PrimaryColor md:group-hover:text-zinc-950 transition-all shrink-0">
+            <ArrowUpRight size={16} />
           </div>
         </div>
 
