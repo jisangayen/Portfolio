@@ -11,9 +11,9 @@ export default {
         'sans': ['Inter']
       },
       colors: {
-        PrimaryColor: "#fe8d4e",
-        PrimaryColor2: "#fd5472",
-        SecondaryColor: "#7234fe"
+        PrimaryColor: "#375534",
+        PrimaryColor2: "#6b9071",
+        SecondaryColor: "#aec3bo"
       }
     },
   },
