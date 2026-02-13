@@ -120,13 +120,13 @@ const Contact = () => {
               <div className='grid md:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8'>
                 <div className="relative space-y-1">
                   <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-500">Name</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleChange} onBlur={(e) => validateField('name', e.target.value)} placeholder='Jisan Hoque' className={inputStyles('name')} />
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} onBlur={(e) => validateField('name', e.target.value)} placeholder='John Bravo' className={inputStyles('name')} />
                   {errors.name && <span className="absolute -bottom-4 left-0 text-red-500 text-[9px] flex items-center gap-1"><AlertCircle size={8}/>{errors.name}</span>}
                 </div>
 
                 <div className="relative space-y-1">
                   <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-500">Email</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} onBlur={(e) => validateField('email', e.target.value)} placeholder='hello@jisan.dev' className={inputStyles('email')} />
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} onBlur={(e) => validateField('email', e.target.value)} placeholder='johnbravo@gmail.com' className={inputStyles('email')} />
                   {errors.email && <span className="absolute -bottom-4 left-0 text-red-500 text-[9px] flex items-center gap-1"><AlertCircle size={8}/>{errors.email}</span>}
                 </div>
               </div>
