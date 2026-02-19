@@ -91,10 +91,10 @@ export const Navbar = ({ navOpen, setNavOpen }) => {
                 <h3 className="text-2xl font-black text-white tracking-tighter mb-2">VIEW RESUME</h3>
                 <p className="text-zinc-400 text-sm mb-8">Access my professional profile or download for offline viewing.</p>
                 <div className="grid gap-4">
-                  <a href="/JisanHoqueGayen.pdf" target="_blank" className="flex items-center justify-center gap-3 w-full bg-white text-black py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-PrimaryColor transition-colors">
+                  <a href="/Jisan_Hoque_Gayen.pdf" target="_blank" className="flex items-center justify-center gap-3 w-full bg-white text-black py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-PrimaryColor transition-colors">
                     View Online <ExternalLink size={16} />
                   </a>
-                  <a href="/JisanHoqueGayen.pdf" download className="flex items-center justify-center gap-3 w-full bg-zinc-800 text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs border border-zinc-700 hover:bg-zinc-700 transition-colors cursor-pointer">
+                  <a href="/Jisan_Hoque_Gayen.pdf" download className="flex items-center justify-center gap-3 w-full bg-zinc-800 text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs border border-zinc-700 hover:bg-zinc-700 transition-colors cursor-pointer">
                     Download PDF <Download size={16} />
                   </a>
                 </div>

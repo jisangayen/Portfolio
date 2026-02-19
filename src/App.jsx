@@ -44,7 +44,7 @@ export default function App() {
       <Hero/>
       <About/>
       <Skills/>
-      {/* <Skils2/> */}
+      <Skils2/>
       <Work/>
       <Contact/>
     </main>
