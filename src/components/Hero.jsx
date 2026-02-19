@@ -15,6 +15,12 @@ const Hero = () => {
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
 
+  const socialLinks = [
+  { Icon: Github, href: "https://github.com/jisangayen" },
+  { Icon: Linkedin, href: "https://www.linkedin.com/in/jisan-gayen/" },
+  { Icon: Instagram, href: "https://www.instagram.com/jisan__hoque/" },
+];
+
   return (
     /* Changed min-h-screen to min-h-fit and adjusted padding for mobile */
     <section
@@ -42,11 +48,13 @@ const Hero = () => {
         className="hidden xl:flex fixed left-12 bottom-0 flex-col items-center gap-8 z-50"
       >
         <div className="flex flex-col gap-6 text-zinc-500">
-          {[Github, Linkedin, Instagram].map((Icon, i) => (
+          {socialLinks.map(({ Icon, href }, i) => (
             <motion.a
               key={i}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ y: -4, color: "#fff" }}
-              href="#"
               className="transition-colors"
             >
               <Icon size={18} />
