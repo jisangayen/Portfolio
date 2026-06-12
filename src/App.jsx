@@ -19,37 +19,37 @@ import Skils2 from "./components/Skils2"
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
-  useGSAP(()=>{
-    const elements = gsap.utils.toArray('.reveal-up')
-    elements.forEach((element)=>{
-      gsap.to(element,{
-        scrollTrigger:{
-          trigger:element,
-          scrub: true,
-          start:'-200 bottom',
-          end: 'bottom -80%'
-        },
-        y:0,
-        opacity: 1,
+  useGSAP(()=>{
+    const elements = gsap.utils.toArray('.reveal-up')
+    elements.forEach((element)=>{
+      gsap.to(element,{
+        scrollTrigger:{
+          trigger:element,
+          scrub: true,
+          start:'-200 bottom',
+          end: 'bottom -80%'
+        },
+        y:0,
+        opacity: 1,
 
-        duration: 1,
-        ease: 'power2.out'
-      })
-    })
-  })
-  return (
-    <ReactLenis root>
-       <Header/>
-    <main>
-      <Hero/>
-      <About/>
-      <Skills/>
-      <Skils2/>
-      <Work/>
-      <Contact/>
-    </main>
-    <Footer/>
+        duration: 1,
+        ease: 'power2.out'
+      })
+    })
+  })
+  return (
+    <ReactLenis root>
+       <Header/>
+    <main>
+      <Hero/>
+      <About/>
+      <Skills/>
+      <Skils2/>
+      <Work/>
+      <Contact/>
+    </main>
+    <Footer/>
 
-    </ReactLenis>
-  )
+    </ReactLenis>
+  )
 }
