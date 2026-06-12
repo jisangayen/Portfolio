@@ -13,6 +13,7 @@ export const Navbar = ({ navOpen, setNavOpen }) => {
     { label: 'Work', link: '#work' },
     { label: 'Resume', link: '#resume', isResume: true },
     { label: 'Contact', link: '#contact', isContact: true },
+    
   ];
 
   const handleLinkClick = (e, item) => {
