@@ -7,7 +7,7 @@ const works = [
   {
     imgSrc: "/images/p1.png",
     title: "Dr. Appointment",
-    tags: ["React", "Full Stack"],
+    tags: ["React", "Node","MongoDB"],
     projectLink: "https://doctor-appointment-frontend-six.vercel.app/",
   },
   {
@@ -19,13 +19,13 @@ const works = [
   {
     imgSrc: "/images/p4.png",
     title: "Music App",
-    tags: ["UI/UX", "Development"],
+    tags: ["HTML", "CSS"],
     projectLink: "https://spotify-seven-eta.vercel.app/",
   },
   {
     imgSrc: "/images/p5.png",
     title: "Admin Panel",
-    tags: ["Next.js", "Auth"],
+    tags: ["MERN", "Auth"],
     projectLink: "https://doctor-appointment-admin-six.vercel.app/",
   },
 ];
@@ -34,100 +34,72 @@ const Work = () => {
   const scrollRef = useRef(null);
   const { scrollXProgress } = useScroll({ container: scrollRef });
 
-  // Navigation Logic
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = direction === "left" ? -400 : 400;
+      const scrollAmount = direction === "left" ? -340 : 340;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
 
   const handleWheel = (e) => {
-    if (scrollRef.current) {
-      if (e.deltaY !== 0) {
-        scrollRef.current.scrollLeft += e.deltaY;
-      }
+    if (scrollRef.current && e.deltaY !== 0) {
+      scrollRef.current.scrollLeft += e.deltaY;
     }
   };
 
   return (
-    <section
-      className="py-12 md:py-24 bg-zinc-950 relative overflow-hidden"
-      id="work"
-    >
-      {/* Background Parallax Text */}
-      <div className="absolute inset-0 flex items-center pointer-events-none overflow-hidden select-none">
-        <h2 className="text-[20vw] font-black text-white/[0.02] uppercase whitespace-nowrap">
-          The Archive • The Archive • The Archive
-        </h2>
-      </div>
+    <section className="py-20 bg-zinc-950 relative overflow-hidden select-none" id="work">
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-zinc-800/40 to-transparent" />
 
-      <div className="container px-4 md:px-6 mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-4">
-          <div className="text-left">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "60px" }}
-              className="h-[2px] bg-PrimaryColor mb-4"
-            />
-            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">
-              THE <span className="text-zinc-700">ARCHIVE.</span>
+      <div className="container px-6 mx-auto relative z-10 max-w-7xl">
+        {/* Clean Header Area */}
+        <div className="flex flex-row items-end justify-between mb-12 md:mb-16">
+          <div>
+            <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-zinc-500 mb-2">
+              Selected Showcase
+            </p>
+            <h2 className="text-3xl md:text-5xl font-semibold text-white tracking-tight">
+              The <span className="text-zinc-600 font-light">Archive.</span>
             </h2>
           </div>
 
-          <div className="flex flex-col items-end gap-4">
-            <div className="flex items-center gap-3 text-zinc-500 font-mono text-xs uppercase tracking-widest">
-              <span>Scroll to explore</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              >
-                <FaChevronRight className="text-PrimaryColor" />
-              </motion.div>
-            </div>
-
-            {/* Desktop Navigation Buttons */}
-            <div className="hidden md:flex items-center gap-2 mt-2">
-              <button
-                onClick={() => scroll("left")}
-                className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:bg-zinc-900 hover:text-white transition-all active:scale-90"
-                aria-label="Scroll Left"
-              >
-                <FaChevronLeft size={14} />
-              </button>
-              <button
-                onClick={() => scroll("right")}
-                className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 hover:bg-zinc-900 hover:text-white transition-all active:scale-90"
-                aria-label="Scroll Right"
-              >
-                <FaChevronRight size={14} />
-              </button>
-            </div>
+          {/* Minimal Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scroll("left")}
+              className="w-9 h-9 rounded-xl border border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:text-white hover:border-zinc-800/80 flex items-center justify-center transition-all duration-300"
+              aria-label="Scroll Left"
+            >
+              <FaChevronLeft size={10} />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="w-9 h-9 rounded-xl border border-zinc-900 bg-zinc-900/20 text-zinc-500 hover:text-white hover:border-zinc-800/80 flex items-center justify-center transition-all duration-300"
+              aria-label="Scroll Right"
+            >
+              <FaChevronRight size={10} />
+            </button>
           </div>
         </div>
 
+        {/* Horizontal Card Rail Container */}
         <div
           ref={scrollRef}
           onWheel={handleWheel}
-          className="flex flex-row gap-6 md:gap-12 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-12 cursor-grab active:cursor-grabbing"
+          className="flex flex-row gap-5 overflow-x-auto snap-x snap-mandatory pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {works.map((project, key) => (
             <motion.div
               key={key}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: key * 0.1 }}
-              className="relative w-[85vw] sm:w-[450px] md:w-[500px] shrink-0 snap-center"
+              transition={{ delay: key * 0.05, type: "spring", stiffness: 100 }}
+              className="relative w-[80vw] sm:w-[320px] shrink-0 snap-center flex flex-col gap-3"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-PrimaryColor font-mono text-xs font-bold tracking-widest">
-                  0{key + 1}
-                </span>
-                <div className="h-[1px] flex-1 bg-zinc-800/50" />
-                <span className="text-zinc-600 font-mono text-[10px] uppercase">
-                  Case Study
-                </span>
+              <div className="flex items-center justify-between px-1 text-zinc-600 font-mono text-[10px] tracking-wider uppercase">
+                <span> 0{key + 1}</span>
+                {/* <span className="opacity-40">Deployment</span> */}
               </div>
 
               <ProjectCard
@@ -139,42 +111,38 @@ const Work = () => {
             </motion.div>
           ))}
 
-          <div className="w-[60vw] md:w-[300px] shrink-0 flex flex-col justify-center snap-center p-8 border border-zinc-900 rounded-[2rem] bg-zinc-900/20 backdrop-blur-sm">
-            <h3 className="text-zinc-600 text-3xl font-black leading-none uppercase tracking-tighter mb-4">
-              Your project <br /> could be <br />{" "}
-              <span className="text-white">next.</span>
-            </h3>
+          {/* Clean Call To Action Box */}
+          <div className="w-[65vw] sm:w-[260px] shrink-0 flex flex-col justify-between snap-center p-6 border border-zinc-900 rounded-xl bg-zinc-900/10 backdrop-blur-sm mt-7">
+            <div>
+              <h3 className="text-zinc-500 text-lg font-medium leading-snug tracking-tight uppercase mb-2">
+                Your project <br /> could be <br />
+                <span className="text-white">next.</span>
+              </h3>
+              <p className="text-zinc-600 text-xs leading-relaxed">Let's coordinate to build clean digital platforms tailored to your operational ecosystem.</p>
+            </div>
+            
             <a
               href="mailto:jisangayen@gmail.com"
-              className="text-PrimaryColor font-mono text-xs uppercase tracking-widest text-left hover:underline flex items-center group"
+              className="text-zinc-400 font-medium text-xs tracking-wider uppercase flex items-center group mt-8 hover:text-white transition-colors duration-300"
             >
               Get in touch
-              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 ml-1">
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 ml-1.5 text-[10px]">
                 →
               </span>
             </a>
           </div>
         </div>
 
-        <div className="max-w-md mx-auto mt-4">
+        {/* Minimal Timeline Indicator Bar */}
+        <div className="max-w-xs mx-auto mt-6">
           <div className="relative h-[2px] w-full bg-zinc-900 rounded-full overflow-hidden">
             <motion.div
               style={{ scaleX: scrollXProgress }}
-              className="absolute inset-0 bg-PrimaryColor origin-left"
+              className="absolute inset-0 bg-zinc-700 origin-left rounded-full"
             />
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none !important;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none !important;
-          scrollbar-width: none !important;
-        }
-      `}</style>
     </section>
   );
 };

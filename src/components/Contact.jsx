@@ -63,7 +63,7 @@ const Contact = () => {
   `;
 
   return (
-    <section id='contact' className="relative py-16 lg:py-32 overflow-hidden bg-[#050505]">
+    <section id='contact' className="relative py-16 lg:py-10 overflow-hidden bg-[#050505]">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-50 md:opacity-100">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-PrimaryColor/10 blur-[100px] md:blur-[120px] rounded-full animate-pulse" />
