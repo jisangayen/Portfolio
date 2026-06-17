@@ -66,7 +66,7 @@ const Header = () => {
           <div className="relative">
             {/* Mobile Toggle */}
             <button 
-              className="lg:hidden w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-100 transition-all active:scale-90"
+              className="md:hidden w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-100 transition-all active:scale-90"
               onClick={() => setNavOpen((prev) => !prev)}
             >
               <AnimatePresence mode="wait">

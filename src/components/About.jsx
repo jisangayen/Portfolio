@@ -3,7 +3,7 @@ import { motion, useInView, animate } from "framer-motion";
 
 const aboutItems = [
   { label: "Projects", number: 10, suffix: "+" },
-  { label: "Experience", number: 1, suffix: "yr" },
+  { label: "Experience", number: 2, suffix: "yr" },
   { label: "Tech Stack", number: 12, suffix: "" },
 ];
 

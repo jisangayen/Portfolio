@@ -61,7 +61,7 @@ const Footer = () => {
   return (
     <footer
       ref={container}
-      className="relative bg-[#080808] pt-20 pb-6 md:pt-32 md:pb-10 overflow-hidden border-t border-zinc-900/50"
+      className="relative bg-[#080808] pt-20 pb-6 md:pt-20 md:pb-10 overflow-hidden border-t border-zinc-900/50"
     >
       <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-PrimaryColor/5 blur-[100px] md:blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2" />
 
