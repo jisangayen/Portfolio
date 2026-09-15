@@ -1,51 +1,37 @@
-import React, { useState, useRef } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { Github, Linkedin, Instagram, Send, Sparkles, AlertCircle } from 'lucide-react'
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Send, 
+  AlertCircle, 
+  Mail, 
+  User, 
+  MessageSquare, 
+  ShieldCheck,
+  Loader2,
+  CheckCircle2
+} from 'lucide-react';
 
-// --- Magnetic Hook for Socials (Optimized for Mobile) ---
-const MagneticIcon = ({ children, href, label }) => {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springConfig = { stiffness: 150, damping: 15, mass: 0.1 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
-
-  const handleMouse = (e) => {
-    // Disable magnetic pull on small touch screens for better UX
-    if (window.innerWidth < 768) return;
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current.getBoundingClientRect();
-    x.set((clientX - (left + width / 2)) * 0.4);
-    y.set((clientY - (top + height / 2)) * 0.4);
-  };
-
-  return (
-    <motion.a
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-      href={href} target="_blank" rel="noreferrer"
-      style={{ x: springX, y: springY }}
-      className="w-12 h-12 md:w-14 md:h-14 grid place-items-center bg-zinc-900 border border-zinc-800 rounded-xl md:rounded-2xl text-zinc-400 hover:border-PrimaryColor/50 hover:text-PrimaryColor transition-colors shadow-2xl"
-      title={label}
-    >
-      {children}
-    </motion.a>
-  );
-};
+const projectTypes = [
+  "Full-Stack Web App",
+  "React / Frontend",
+  "Backend & API",
+  "Consultation",
+  "Other"
+];
 
 const Contact = () => {
-  const [activeType, setActiveType] = useState('Web App');
+  const [activeType, setActiveType] = useState('Full-Stack Web App');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const validateField = (name, value) => {
     let error = "";
-    if (name === 'name' && value.length < 2) error = "Name too short";
-    if (name === 'email' && !/\S+@\S+\.\S+/.test(value)) error = "Invalid email";
-    if (name === 'message' && value.length < 10) error = "Needs more detail";
-    
+    if (name === 'name' && value.trim().length < 2) error = "Please enter your name";
+    if (name === 'email' && !/\S+@\S+\.\S+/.test(value)) error = "Please enter a valid email address";
+    if (name === 'message' && value.trim().length < 10) error = "Please provide more details (min 10 characters)";
+
     setErrors(prev => ({ ...prev, [name]: error }));
     return error === "";
   };
@@ -56,104 +42,319 @@ const Contact = () => {
     if (errors[name]) validateField(name, value);
   };
 
-  const inputStyles = (name) => `
-    w-full bg-transparent border-b py-2 md:py-3 text-sm md:text-base text-zinc-100 placeholder:text-zinc-700 outline-none transition-all duration-300
-    ${errors[name] ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-PrimaryColor'}
-    ${formData[name] && !errors[name] ? 'border-green-500/30' : ''}
-  `;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const isNameValid = validateField('name', formData.name);
+    const isEmailValid = validateField('email', formData.email);
+    const isMsgValid = validateField('message', formData.message);
+
+    if (!isNameValid || !isEmailValid || !isMsgValid) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const formPayload = new FormData();
+      formPayload.append('name', formData.name);
+      formPayload.append('email', formData.email);
+      formPayload.append('message', formData.message);
+      formPayload.append('project_type', activeType);
+
+      const response = await fetch("https://getform.io/f/avrydwpa", {
+        method: "POST",
+        body: formPayload,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setFormData({ name: '', email: '', message: '' });
+        setErrors({});
+        setSubmitStatus('success');
+        setTimeout(() => {
+          setSubmitStatus(null);
+        }, 5000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <section id='contact' className="relative py-16 lg:py-10 overflow-hidden bg-[#050505]">
-      {/* Background Glow */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-50 md:opacity-100">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-PrimaryColor/10 blur-[100px] md:blur-[120px] rounded-full animate-pulse" />
-      </div>
+    <section 
+      id="contact" 
+      className="relative py-8 sm:py-10 overflow-hidden bg-zinc-100/70 dark:bg-[#070709] transition-colors duration-300 select-none"
+    >
+      {/* Dynamic Ambient Mesh Glows */}
+      <div className="absolute top-1/4 -left-40 w-[500px] h-[500px] bg-PrimaryColor/15 dark:bg-PrimaryColor/20 blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute bottom-10 -right-40 w-[500px] h-[500px] bg-PrimaryColor2/15 dark:bg-PrimaryColor2/15 blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-zinc-300 dark:via-zinc-800 to-transparent" />
 
-      <div className='container px-6 relative z-10 lg:grid lg:grid-cols-12 lg:gap-16 items-center'>
-        
-        {/* Left Side: Header */}
-        <div className="lg:col-span-5 mb-10 lg:mb-0">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-PrimaryColor text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-6">
-              <Sparkles size={10} /> Ready to scale?
+      <div className="container px-6 mx-auto relative z-10 max-w-7xl">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          {/* ========================================================= */}
+          {/* --- LEFT COLUMN: IMPACT HEADLINE & INTRO NARRATIVE --- */}
+          {/* ========================================================= */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* Availability Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-300/80 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm mb-2"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-zinc-700 dark:text-zinc-300 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+                Available for New Projects
+              </span>
+            </motion.div>
+
+            {/* Impact Headline */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl sm:text-5xl md:text-6xl font-black text-zinc-900 dark:text-white tracking-tight leading-[1.02]"
+            >
+              Let's Build Something{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-PrimaryColor via-PrimaryColor2 to-emerald-500 italic">
+                Extraordinary.
+              </span>
+            </motion.h2>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm leading-relaxed"
+            >
+              Whether you have an upcoming project, a contract role, or an architecture inquiry, my inbox is always open. Let's discuss how we can bring your vision to life with clean, scalable, and high-performance engineering.
+            </motion.p>
+
+          </div>
+
+          {/* ========================================================= */}
+          {/* --- RIGHT COLUMN: LUXURY INTERACTIVE CONTACT FORM --- */}
+          {/* ========================================================= */}
+          <motion.div 
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15, duration: 0.7 }}
+            className="lg:col-span-7"
+          >
+            <div className="relative rounded-3xl bg-white/95 dark:bg-zinc-900/85 border border-zinc-200/90 dark:border-zinc-800/90 p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-2xl overflow-hidden">
+              
+              {/* Ambient internal light orb */}
+              <div className="absolute -top-20 -right-20 w-48 h-48 bg-PrimaryColor/15 blur-3xl rounded-full pointer-events-none" />
+
+              <form 
+                action="https://getform.io/f/avrydwpa" 
+                method="POST" 
+                onSubmit={handleSubmit}
+                className="space-y-6 relative z-10"
+              >
+                {/* 1. Project Interest Pill Selector */}
+                <div>
+                  <label className="block text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-3">
+                    I'm interested in...
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {projectTypes.map((type) => {
+                      const isSelected = activeType === type;
+                      return (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => setActiveType(type)}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium transition-all duration-200 border ${
+                            isSelected
+                              ? "bg-PrimaryColor text-white border-PrimaryColor shadow-md scale-102"
+                              : "bg-zinc-100 dark:bg-zinc-800/70 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700/60 hover:border-zinc-300 dark:hover:border-zinc-600"
+                          }`}
+                        >
+                          {type}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <input type="hidden" name="project_type" value={activeType} />
+                </div>
+
+                {/* 2. Form Inputs Grid */}
+                <div className="grid sm:grid-cols-2 gap-5">
+                  
+                  {/* Name Input */}
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                      Your Name *
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                        <User size={15} />
+                      </div>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        onBlur={(e) => validateField('name', e.target.value)}
+                        placeholder="John Doe"
+                        className={`w-full pl-10 pr-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border text-xs sm:text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none transition-all ${
+                          errors.name
+                            ? "border-red-500/70 focus:ring-2 focus:ring-red-500/20"
+                            : "border-zinc-200 dark:border-zinc-700/70 focus:border-PrimaryColor focus:ring-2 focus:ring-PrimaryColor/20"
+                        }`}
+                      />
+                    </div>
+                    {errors.name && (
+                      <p className="text-red-500 text-[10px] flex items-center gap-1 mt-1 font-mono">
+                        <AlertCircle size={10} /> {errors.name}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Email Input */}
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                      Your Email *
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                        <Mail size={15} />
+                      </div>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        onBlur={(e) => validateField('email', e.target.value)}
+                        placeholder="john@example.com"
+                        className={`w-full pl-10 pr-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border text-xs sm:text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none transition-all ${
+                          errors.email
+                            ? "border-red-500/70 focus:ring-2 focus:ring-red-500/20"
+                            : "border-zinc-200 dark:border-zinc-700/70 focus:border-PrimaryColor focus:ring-2 focus:ring-PrimaryColor/20"
+                        }`}
+                      />
+                    </div>
+                    {errors.email && (
+                      <p className="text-red-500 text-[10px] flex items-center gap-1 mt-1 font-mono">
+                        <AlertCircle size={10} /> {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                </div>
+
+                {/* 3. Message Textarea */}
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                    Project Message / Scope *
+                  </label>
+                  <div className="relative">
+                    <div className="absolute top-3.5 left-3.5 pointer-events-none text-zinc-400">
+                      <MessageSquare size={15} />
+                    </div>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleChange}
+                      onBlur={(e) => validateField('message', e.target.value)}
+                      placeholder="Tell me about your project goals, timeline, or key technical requirements..."
+                      className={`w-full pl-10 pr-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border text-xs sm:text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none resize-none transition-all ${
+                        errors.message
+                          ? "border-red-500/70 focus:ring-2 focus:ring-red-500/20"
+                          : "border-zinc-200 dark:border-zinc-700/70 focus:border-PrimaryColor focus:ring-2 focus:ring-PrimaryColor/20"
+                      }`}
+                    />
+                  </div>
+                  {errors.message && (
+                    <p className="text-red-500 text-[10px] flex items-center gap-1 mt-1 font-mono">
+                      <AlertCircle size={10} /> {errors.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* 4. Magnetic Submit Button */}
+                <motion.button
+                  whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`group relative w-full h-12 sm:h-14 rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-bold text-xs sm:text-sm uppercase tracking-wider overflow-hidden shadow-xl flex items-center justify-center gap-2 transition-all ${
+                    isSubmitting ? "opacity-80 cursor-not-allowed" : "active:scale-98 cursor-pointer"
+                  }`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-PrimaryColor via-PrimaryColor2 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative z-10 flex items-center justify-center gap-2 group-hover:text-white transition-colors">
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send size={15} className="group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
+                  </div>
+                </motion.button>
+
+                {/* Status Feedback Messages */}
+                {submitStatus === 'success' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono flex items-center gap-2 justify-center text-center"
+                  >
+                    <CheckCircle2 size={15} className="shrink-0 text-emerald-500" />
+                    <span>Thank you! Your message has been sent successfully.</span>
+                  </motion.div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-mono flex items-center gap-2 justify-center text-center"
+                  >
+                    <AlertCircle size={15} className="shrink-0 text-red-500" />
+                    <span>Oops! Something went wrong. Please try again.</span>
+                  </motion.div>
+                )}
+
+                {/* Privacy Badge */}
+                <div className="flex items-center justify-center gap-1.5 text-zinc-400 dark:text-zinc-500 text-[10px] font-mono">
+                  <ShieldCheck size={12} className="text-emerald-500" />
+                  <span>Privacy protected • No spam, ever</span>
+                </div>
+
+              </form>
             </div>
-            <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white tracking-tighter leading-[0.9] md:leading-[0.85] mb-6 md:mb-8">
-              LEAD THE <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-PrimaryColor to-zinc-400 italic">CHANGE.</span>
-            </h2>
           </motion.div>
 
-          <div className="flex items-center gap-3 md:gap-4">
-            <MagneticIcon href="https://github.com/jisangayen" label="GitHub"><Github size={20} /></MagneticIcon>
-            <MagneticIcon href="https://linkedin.com/in/jisan-gayen/" label="LinkedIn"><Linkedin size={20} /></MagneticIcon>
-            <MagneticIcon href="https://instagram.com/jisan__hoque/" label="Instagram"><Instagram size={20} /></MagneticIcon>
-          </div>
         </div>
-
-        {/* Right Side: Form */}
-        <motion.div 
-          animate={Object.values(errors).some(e => e) ? { x: [0, -3, 3, -3, 3, 0] } : {}}
-          transition={{ duration: 0.4 }}
-          className="lg:col-span-7 relative"
-        >
-          <div className='relative bg-zinc-900/40 backdrop-blur-2xl border border-white/5 p-6 md:p-10 lg:p-12 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl'>
-            <form action="https://getform.io/f/avrydwpa" method='POST' onSubmit={(e) => {
-               if(!validateField('name', formData.name) || !validateField('email', formData.email) || !validateField('message', formData.message)) e.preventDefault();
-            }}>
-              
-              {/* Chips Section */}
-              <div className="mb-8">
-                <p className='text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3 md:mb-4'>I'm interested in...</p>
-                <div className="flex flex-wrap gap-2 md:gap-3">
-                  {['Web App', 'Mobile App', 'UI/UX'].map((type) => (
-                    <button key={type} type="button" onClick={() => setActiveType(type)}
-                      className={`px-4 py-1.5 md:px-5 md:py-2 rounded-full text-[11px] md:text-sm font-medium transition-all duration-300 border 
-                      ${activeType === type ? 'bg-PrimaryColor border-PrimaryColor text-zinc-950' : 'bg-zinc-950/50 border-zinc-800 text-zinc-400'}`}>
-                      {type}
-                    </button>
-                  ))}
-                </div>
-                <input type="hidden" name="project_type" value={activeType} />
-              </div>
-
-              {/* Input Grid */}
-              <div className='grid md:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8'>
-                <div className="relative space-y-1">
-                  <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-500">Name</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleChange} onBlur={(e) => validateField('name', e.target.value)} placeholder='John Bravo' className={inputStyles('name')} />
-                  {errors.name && <span className="absolute -bottom-4 left-0 text-red-500 text-[9px] flex items-center gap-1"><AlertCircle size={8}/>{errors.name}</span>}
-                </div>
-
-                <div className="relative space-y-1">
-                  <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-500">Email</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} onBlur={(e) => validateField('email', e.target.value)} placeholder='johnbravo@gmail.com' className={inputStyles('email')} />
-                  {errors.email && <span className="absolute -bottom-4 left-0 text-red-500 text-[9px] flex items-center gap-1"><AlertCircle size={8}/>{errors.email}</span>}
-                </div>
-              </div>
-
-              <div className="relative space-y-1 mb-10">
-                <label className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-500">Message</label>
-                <textarea name="message" value={formData.message} onChange={handleChange} onBlur={(e) => validateField('message', e.target.value)} placeholder="Project details..." className={inputStyles('message') + ' min-h-[80px] md:min-h-[100px] resize-none'} />
-                {errors.message && <span className="absolute -bottom-4 left-0 text-red-500 text-[9px] flex items-center gap-1"><AlertCircle size={8}/>{errors.message}</span>}
-              </div>
-
-              <motion.button 
-                whileTap={{ scale: 0.98 }}
-                type="submit" 
-                className="group relative w-full h-14 md:h-16 bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-xl"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-PrimaryColor to-PrimaryColor2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative flex items-center justify-center gap-2 text-zinc-950 font-bold uppercase tracking-widest text-[11px] md:text-sm">
-                  <span>Send Message</span>
-                  <Send size={14} className="md:size-18 transition-transform group-hover:translate-x-1" />
-                </div>
-              </motion.button>
-            </form>
-          </div>
-        </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
