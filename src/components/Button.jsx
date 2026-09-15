@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 import PropTypes from 'prop-types';
 
@@ -31,11 +31,11 @@ const ButtonPrimary = ({ href, target = '_self', label, icon, classes = "" }) =>
     <>
       {/* Subtle Hover Background Fill */}
       <motion.div 
-        className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500"
+        className="absolute inset-0 bg-zinc-900 dark:bg-white opacity-0 group-hover:opacity-[0.04] dark:group-hover:opacity-[0.03] transition-opacity duration-500"
       />
 
       <div className="relative z-10 flex items-center gap-2">
-        <span className="tracking-[0.3em] uppercase font-medium text-[9px] lg:text-[10px] text-zinc-400 group-hover:text-white transition-colors duration-300">
+        <span className="tracking-[0.3em] uppercase font-medium text-[9px] lg:text-[10px] text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors duration-300">
           {label}
         </span>
 
@@ -57,8 +57,8 @@ const ButtonPrimary = ({ href, target = '_self', label, icon, classes = "" }) =>
     style: { x: springX, y: springY },
     whileTap: { scale: 0.97 },
     className: `group relative flex items-center justify-center px-8 py-3.5 overflow-hidden rounded-full 
-                bg-transparent border border-zinc-800 text-white transition-all duration-500
-                hover:border-zinc-500 hover:bg-zinc-900/40 ${classes}`
+                bg-transparent border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white transition-all duration-500
+                hover:border-zinc-500 hover:bg-zinc-100/70 dark:hover:bg-zinc-900/40 ${classes}`
   };
 
   return href ? (

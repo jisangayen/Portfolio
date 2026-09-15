@@ -1,14 +1,10 @@
 import React from 'react'
 import ReviewCard from './ReviewCard';
-
-// node module 
-import { ReactLenis} from 'lenis/react'
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-//gsap pluging
-// gsap.registerPlugin(useGSAP);
-gsap.registerPlugin(ScrollTrigger); 
+
+gsap.registerPlugin(ScrollTrigger);
 
 const reviews = [
   {
@@ -48,40 +44,40 @@ const reviews = [
     company: 'Skyline Digital'
   }
 ];
+
 const Review = () => {
-  useGSAP(()=>{
-    gsap.to('.scrub-slide',{
-      scrollTrigger:{
+  useGSAP(() => {
+    gsap.to('.scrub-slide', {
+      scrollTrigger: {
         trigger: '.scrub-slide',
-        start:'-200% 80%',
-        end:'400% 80%',
+        start: '-200% 80%',
+        end: '400% 80%',
         scrub: true,
       },
-      x:'-1000'
+      x: '-1000'
     })
   })
   return (
-    <section 
-    id='reviews'
-    className="section overflow-hidden">
-        <div className="container">
-            <h2 className="headline-2 mb-8 reveal-up">
-                What ours customers say
-            </h2>
+    <section
+      id='reviews'
+      className="section overflow-hidden bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+      <div className="container">
+        <h2 className="headline-2 mb-8 reveal-up">
+          What our customers say
+        </h2>
 
-            <div className='flex items-stretch gap-3 w-fit scrub-slide'>
-                {reviews.map(({content, name, imgSrc, company},key)=>(
-                    <ReviewCard
-                    key={key}
-                    name={name}
-                    imgSrc={imgSrc}
-                    content={content}
-                    company={company}
-
-                    />
-                ))}
-            </div>
+        <div className='flex items-stretch gap-3 w-fit scrub-slide'>
+          {reviews.map(({ content, name, imgSrc, company }, key) => (
+            <ReviewCard
+              key={key}
+              name={name}
+              imgSrc={imgSrc}
+              content={content}
+              company={company}
+            />
+          ))}
         </div>
+      </div>
     </section>
   )
 }
